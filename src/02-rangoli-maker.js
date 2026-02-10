@@ -45,22 +45,73 @@
  *   extractRangoliCenter("***LOTUS***", 3, 8) // => "LOTUS"
  *   splitAndJoinRangoli("red,blue", ",", "-")  // => "red-blue"
  */
+
 export function repeatPattern(pattern, times) {
   // Your code here
+  if (
+    typeof pattern !== "string" ||
+    times < 0 ||
+    !Number.isInteger(times) ||
+    Number.isNaN(times)
+  )
+    return "";
+  return pattern.repeat(times);
 }
+
+ 
 
 export function extractRangoliCenter(design, start, end) {
   // Your code here
+  if (typeof design !== "string"  ) return "";
+   if (start !== undefined && typeof start !== "number") return "";
+  if (end !== undefined && typeof end !== "number") return "";
+    if (start !== undefined && !Number.isInteger(start)) return "";
+     if (end !== undefined && !Number.isInteger(end)) return "";
+
+  const s = start ?? 0;
+  const e = end ?? design.length;
+
+  return design.slice(s, e);
 }
 
 export function splitAndJoinRangoli(colorString, oldSep, newSep) {
   // Your code here
+
+    if (typeof colorString !== "string") return "";
+  if (typeof oldSep !== "string" || typeof newSep !== "string") return "";
+
+  return colorString.split(oldSep).join(newSep);
+
 }
 
 export function replaceRangoliColor(design, oldColor, newColor) {
   // Your code here
+
+    if (typeof design !== "string" || typeof oldColor !== "string" || typeof newColor !== "string") return "";
+  
+  
+  return design.replaceAll(oldColor,newColor);
+
+ 
+
 }
+
+
+//  5. makeRangoliBorder(char, length)
+//  *      - .repeat() se char ko bahut baar repeat karo
+//  *      - Phir .slice(0, length) se exact length ka border banao
+//  *      - Agar char string nahi hai ya length positive number nahi hai, return ""
+//  *      - Example: makeRangoliBorder("*", 5) => "*****"
+//  *      - Example: makeRangoliBorder("=-", 7) => "=-=-=-="
 
 export function makeRangoliBorder(char, length) {
   // Your code here
+  if( typeof char !== "string"  ) return "";
+    if (!Number.isInteger(length) || length <= 0) return "";
+  const times = Math.ceil(length / char.length);
+
+      
+  return (char.repeat(times).slice(0,  length));
+
+
 }
