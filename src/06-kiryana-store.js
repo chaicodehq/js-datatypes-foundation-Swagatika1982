@@ -50,22 +50,72 @@
  *   calculateTotal([{price:40,qty:2},...])    // => 160
  *   formatBill([{name:"Atta",price:40,qty:2}]) // => "Atta x 2 = Rs.80"
  */
+
+ 
+
 export function getItemNames(items) {
   // Your code here
-}
+ if ( !Array.isArray(items)  ) return [];
+return items.map((p) => p.name);
 
+}
+ 
 export function getAffordableItems(items, maxPrice) {
   // Your code here
+ if ( !Array.isArray(items) || Number.isNaN(maxPrice)) return [];
+ 
+ return (items.filter((p) => p.price <= maxPrice));
+
 }
 
+ 
 export function calculateTotal(items) {
   // Your code here
+ if ( !Array.isArray(items) || items.length === 0 ) return 0;
+
+ // Because reduce takes an initial accumulator value as its second argument.
+//  array.reduce(callback, initialValue)
+ // So passing 0 guarantees the starting sum is exactly 0, and it also prevents errors on empty arrays.
+return items.reduce((sum, item) => {
+    if (!item || typeof item.price !== "number" || typeof item.qty !== "number") return sum;
+    return sum + item.price * item.qty;
+  }, 0);
+
+
+
 }
 
 export function sortByPrice(items, ascending) {
   // Your code here
+ if ( !Array.isArray(items) ) return [];
+
+return [...items].sort((a, b) => {
+    return ascending ? a.price - b.price : b.price - a.price;
+  });
+
 }
+
+
+//  *   4. sortByPrice(items, ascending)
+//  *      - [...items].sort() se NEW sorted array return karo (original mat badlo!)
+//  *      - ascending = true => low to high, false => high to low
+//  *      - Agar items array nahi hai, return []
+//  *      - Example: sortByPrice([{name:"Ghee",price:500},{name:"Atta",price:40}], true)
+//  *                 => [{name:"Atta",price:40},{name:"Ghee",price:500}]
+//  *
+//  *   5. formatBill(items)
+//  *      - .map() se har item ko "name x qty = Rs.total" format karo
+//  *      - Phir .join("\n") se multi-line bill banao
+//  *      - Agar items array nahi hai ya empty hai, return ""
+//  *      - Example: formatBill([{name:"Atta",price:40,qty:2}]) => "Atta x 2 = Rs.80"
 
 export function formatBill(items) {
   // Your code here
+
+  if ( !Array.isArray(items) || items.length === 0 ) return "";
+
+  return items .map((item) => `${item.name} x ${item.qty} = Rs.${item.price * item.qty}`)
+    .join("\n");
+
+
 }
