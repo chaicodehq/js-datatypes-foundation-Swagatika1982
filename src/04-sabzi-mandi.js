@@ -47,22 +47,61 @@
  *   addUrgentItem(["pyaaz"], "dhaniya")              // => ["dhaniya", "pyaaz"]
  *   removeLastItem(["tamatar", "pyaaz", "mirchi"])   // => "mirchi"
  */
+
+ 
 export function addToCart(cart, item) {
   // Your code here
+if( !Array.isArray(cart)) return -1;
+if(typeof item !== "string" ||   (item.trim()).length ===0 ) return cart.length;
+
+cart.push(item);
+return cart.length;
+
 }
 
+ 
 export function addUrgentItem(cart, item) {
   // Your code here
+if( !Array.isArray(cart)) return [];
+if(typeof item !== "string" ||   (item.trim()).length ===0) return cart;
+
+ cart.unshift(item.trim());
+return cart;
+
 }
+ 
 
 export function removeLastItem(cart) {
   // Your code here
+
+if( !Array.isArray(cart) || cart.length === 0) return undefined;
+
+const removedItem = cart.pop();
+return removedItem;
+
 }
 
 export function isInCart(cart, item) {
   // Your code here
+if( !Array.isArray(cart)) return false;
+ if (typeof item !== "string") return false;
+
+return (cart.includes(item.trim()))  ;
 }
 
+ 
+//  *   5. mergeCarts(cart1, cart2)
+//  *      - .concat() se do carts ko combine karo
+//  *      - Return: new merged array
+//  *      - Agar koi bhi array nahi hai, usse empty array [] maan lo
+//  *      - Example: mergeCarts(["tamatar"], ["mirchi", "adrak"]) => ["tamatar", "mirchi", "adrak"]
+//  * 
 export function mergeCarts(cart1, cart2) {
   // Your code here
+ 
+  const c1 = Array.isArray(cart1) ? cart1 : [];
+  const c2 = Array.isArray(cart2) ? cart2 : [];
+
+return (c1.concat(c2));
+
 }
