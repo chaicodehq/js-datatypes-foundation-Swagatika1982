@@ -50,22 +50,73 @@
  *   roundFare(152.567, 2)                  // => "152.57"
  *   findCheapestAndCostliest(150, 80, 200) // => { cheapest: 80, costliest: 200 }
  */
+
+ 
+
 export function parseFare(fareString) {
   // Your code here
+
+if(typeof fareString !== "string" ) return -1;
+if( (fareString.trim()).length === 0 ) return -1;
+
+let fare = parseFloat(fareString.trim());
+if( Number.isNaN(fare) ) return -1;
+
+return fare;
 }
 
+ 
 export function roundFare(amount, decimalPlaces) {
   // Your code here
+
+  if(decimalPlaces < 0 || !Number.isInteger(decimalPlaces)) return "";
+  if(typeof amount !== "number" || Number.isNaN(amount)) return "";
+
+  const rndFare = (Number(amount)).toFixed(decimalPlaces);  
+  return rndFare;
+
 }
+ 
 
 export function calculateSurge(baseFare, surgeMultiplier) {
   // Your code here
+if (typeof baseFare !== "number" || typeof surgeMultiplier !== "number") return 0;
+if( baseFare <=0 || surgeMultiplier <=0) return 0; 
+
+return Math.ceil(baseFare * surgeMultiplier);
+
 }
 
 export function findCheapestAndCostliest(...fares) {
   // Your code here
+
+  const valid = fares.filter((x) => typeof x === "number" && Number.isFinite(x));
+
+  if (valid.length === 0) return null;
+
+  return {
+    cheapest: Math.min(...valid),
+    costliest: Math.max(...valid),
+  };
 }
+
+ 
+//  *   5. getDistanceDifference(from, to)
+//  *      - parseInt() se string km markers ko numbers mein convert karo
+//  *      - Math.abs() se absolute difference nikalo (direction matter nahi karta)
+//  *      - Agar parse ke baad koi NaN hai, return -1
+//  *      - Example: getDistanceDifference(5, 12) => 7
+//  *      - Example: getDistanceDifference("15", "8") => 7
 
 export function getDistanceDifference(from, to) {
   // Your code here
+  const f = (typeof from === "number") ? from : parseInt(String(from).trim(), 10);
+  const t = (typeof to === "number") ? to : parseInt(String(to).trim(), 10);
+
+if(Number.isNaN(f) || Number.isNaN(t) ) return -1;
+ 
+
+return Math.abs(f - t);
+
+
 }
