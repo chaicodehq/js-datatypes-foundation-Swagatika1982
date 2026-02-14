@@ -54,16 +54,94 @@
  */
 export function createThaliDescription(thali) {
   // Your code here
+  if (thali === null || typeof thali !== "object" || Array.isArray(thali)) return "";
+
+  const { name, items, price, isVeg } = thali;
+
+  if (typeof name !== "string") return "";
+  if (!Array.isArray(items)) return "";
+  if (typeof price !== "number" || !Number.isFinite(price)) return "";
+  if (typeof isVeg !== "boolean") return "";
+
+  const typeText = isVeg ? "Veg" : "Non-Veg";
+  return `${name.toUpperCase()} (${typeText}) - Items: ${items.join(", ")} - Rs.${price.toFixed(
+    2
+  )}`;
 }
 
 export function getThaliStats(thalis) {
   // Your code here
+
+   if (!Array.isArray(thalis) || thalis.length === 0) return null;
+    const totalThalis = thalis.length;
+
+  const vegCount = thalis.filter((t) => t && typeof t === "object" && t.isVeg === true).length;
+  const nonVegCount = thalis.filter((t) => t && typeof t === "object" && t.isVeg === false).length;
+
+  const prices = thalis
+    .map((t) => t?.price)
+    .filter((p) => typeof p === "number" && Number.isFinite(p));
+
+  const avgPriceNum =
+    prices.length === 0 ? 0 : prices.reduce((sum, p) => sum + p, 0) / prices.length;
+
+  const cheapest = prices.length === 0 ? 0 : Math.min(...prices);
+  const costliest = prices.length === 0 ? 0 : Math.max(...prices);
+
+  const names = thalis
+    .map((t) => t?.name)
+    .filter((n) => typeof n === "string");
+
+  return {
+    totalThalis,
+    vegCount,
+    nonVegCount,
+    avgPrice: avgPriceNum.toFixed(2), // string
+    cheapest,
+    costliest,
+    names,
+  };
 }
 
 export function searchThaliMenu(thalis, query) {
   // Your code here
+
+  if (!Array.isArray(thalis) || typeof query !== "string") return [];
+
+  const q = query.toLowerCase();
+
+  return thalis.filter((t) => {
+    if (!t || typeof t !== "object") return false;
+
+    const nameMatch =
+      typeof t.name === "string" && t.name.toLowerCase().includes(q);
+
+    const itemMatch =
+      Array.isArray(t.items) &&
+      t.items.some((item) => typeof item === "string" && item.toLowerCase().includes(q));
+
+    return nameMatch || itemMatch;
+  });
 }
 
 export function generateThaliReceipt(customerName, thalis) {
   // Your code here
+
+  if (typeof customerName !== "string" || !customerName.trim()) return "";
+  if (!Array.isArray(thalis) || thalis.length === 0) return "";
+
+  const lines = thalis.map((t) => `- ${t.name} x Rs.${Number(t.price).toFixed(2)}`).join("\n");
+
+  const total = thalis.reduce((sum, t) => {
+    const p = t?.price;
+    return sum + (typeof p === "number" && Number.isFinite(p) ? p : 0);
+  }, 0);
+
+  return `THALI RECEIPT
+---
+Customer: ${customerName.toUpperCase()}
+${lines}
+---
+Total: Rs.${total.toFixed(2)}
+Items: ${thalis.length}`;
 }
